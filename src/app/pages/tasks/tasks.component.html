@@ -1,0 +1,75 @@
+<ngx-spinner bdColor="rgba(0, 0, 0, 0.8)" size="medium" color="#fff" type="square-jelly-box"
+    [fullScreen]="true"><p style="color: white"> Loading... </p></ngx-spinner>
+<app-header></app-header>
+
+<app-task-form (emitAction)="receiveAction($event)"></app-task-form>
+
+<div class="container">
+
+    <div class="title_search">
+        <h2><span class="material-symbols-sharp">
+                checklist_rtl
+            </span>
+            Lista de tareas</h2>
+
+        <form>
+            <div class="form-group">
+                <input type="text" class="form-control" name="filterTask"
+                    [(ngModel)]="filterTask" (input)="search()"
+                    id="exampleFormControlInput1" placeholder="Buscar...">
+                <span class="icon_search material-symbols-sharp">
+                    search
+                </span>
+            </div>
+        </form>
+    </div>
+
+    <div class="table_container">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th scope="col">Id</th>
+                    <th scope="col-2">Mis tareas</th>
+                    <th scope="col">Completada</th>
+                    <th scope="col">Borrar</th>
+                </tr>
+            </thead>
+            <tbody class="table-group-divider">
+                <tr *ngFor="let task of tasks | filter:filterTask | paginate:
+                    {itemsPerPage: 5, currentPage: pageActual}">
+                    <td class="username">{{task.id}}</td>
+                    <td class="username">{{task.title}}</td>
+                    <td class="username">
+                        <input type="checkbox" class="checkbox"
+                            [(ngModel)]="task.state" id="exampleCheck1"
+                            (change)="editTask(task)">
+                    </td>
+                    <td class="username">
+                        <span class="icon_delete material-symbols-sharp"
+                            (click)="this.deleteTask(task)">
+                            delete
+                        </span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="pagination_content">
+        <pagination-controls (pageChange)="pageActual= $event" previousLabel=""
+            nextLabel=""></pagination-controls>
+    </div>
+
+    <div class="alert alert-success" role="alert" *ngIf="message && message != 'Ha ocurrido un error'">
+        {{message}}
+    </div>
+
+    <div class="alert alert-danger " role="alert" *ngIf="message && message == 'Ha ocurrido un error'">
+        {{message}}
+    </div>
+
+    <a class="logo_github_container" target="_blank"
+        href="https://github.com/mmigu/angular-tareas-ApiRest">
+        <img class="logo_github" src="assets/logo_github.png" />
+    </a>
+</div>
